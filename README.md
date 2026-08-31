@@ -82,7 +82,7 @@ an owner-configured AWS credential path.
 | Setup + run instructions (README) | this file |
 | Architecture diagram | `ARCHITECTURE.md` + `architecture/architecture-diagram.svg` |
 | MIT license | [LICENSE](LICENSE) |
-| Demo video (<= 5 min) | script: `workspace/demo-video-script-v2.md` (recording pending) |
+| Demo video (<= 5 min) | recording in progress (finalized script targets <= 4:30) |
 | Live demo artifact | `inbox.html` (interactive decision inbox) |
 | AgentCore deployment | prepared in `deployment/` (optional, strengthens Technical Implementation) |
 
