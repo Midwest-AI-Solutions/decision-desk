@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/
+
+# Generated demo output (regenerate with: decision-desk --fixtures fixtures/scenarios.json)
+inbox.html
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/

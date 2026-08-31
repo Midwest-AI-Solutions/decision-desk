@@ -1,0 +1,29 @@
+[project]
+name = "decision-desk"
+version = "0.1.0"
+description = "Decision Desk - after-hours job-capture agent for home-service SMBs (Agents for Humans Hackathon entry)"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [{ name = "Midwest AI Solutions" }]
+dependencies = [
+    "strands-agents>=0.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+]
+
+[project.scripts]
+decision-desk = "decision_desk.__main__:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
