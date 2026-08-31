@@ -12,6 +12,7 @@ import re
 from typing import Iterable
 
 from .models import Channel, Decision, MessageRecord, Urgency
+from .provider import Summarizer
 
 # --- triage rules -----------------------------------------------------------
 
@@ -181,7 +182,12 @@ def _emergency_guidance(text: str) -> str:
     return "shut off water at the main if safely possible"
 
 
-def draft_action(message: MessageRecord, urgency: Urgency, category: str) -> tuple[str, dict]:
+def draft_action(
+    message: MessageRecord,
+    urgency: Urgency,
+    category: str,
+    summarizer: Summarizer | None = None,
+) -> tuple[str, dict]:
     """Draft the concrete next action for a triaged message."""
     if urgency is Urgency.EMERGENCY:
         guidance = _emergency_guidance(f"{message.subject}\n{message.body}")
@@ -218,21 +224,28 @@ def draft_action(message: MessageRecord, urgency: Urgency, category: str) -> tup
         return action, details
 
     # routine
+    answer = (
+        "Thanks for reaching out! We're open 8am-6pm weekdays and 9am-1pm "
+        "Saturdays. We'll follow up with specifics first thing tomorrow."
+    )
+    if summarizer is not None:  # powered mode: LLM rephrases, never re-triages
+        answer = summarizer.complete(answer)
     details = {
-        "answer": (
-            "Thanks for reaching out! We're open 8am-6pm weekdays and 9am-1pm "
-            "Saturdays. We'll follow up with specifics first thing tomorrow."
-        ),
+        "answer": answer,
         "notify": False,
     }
     action = "Auto-queue the drafted answer; no interruption to the owner."
     return action, details
 
 
-def triage(message: MessageRecord) -> Decision:
-    """Run one message through the full pipeline."""
+def triage(message: MessageRecord, summarizer: Summarizer | None = None) -> Decision:
+    """Run one message through the full pipeline.
+
+    ``summarizer`` (optional) is only consulted for routine-answer phrasing;
+    classification and escalation are always deterministic.
+    """
     urgency, category, reasoning = classify_urgency(message)
-    action, details = draft_action(message, urgency, category)
+    action, details = draft_action(message, urgency, category, summarizer)
     return Decision(
         message=message,
         urgency=urgency,
@@ -243,9 +256,9 @@ def triage(message: MessageRecord) -> Decision:
     )
 
 
-def run_cycle(messages: Iterable[MessageRecord]) -> list[Decision]:
+def run_cycle(messages: Iterable[MessageRecord], summarizer: Summarizer | None = None) -> list[Decision]:
     """Run one unattended intake cycle. Deterministic order: by urgency, then time."""
-    decisions = [triage(m) for m in messages]
+    decisions = [triage(m, summarizer) for m in messages]
     order = {Urgency.EMERGENCY: 0, Urgency.DECISION: 1, Urgency.ROUTINE: 2}
     decisions.sort(key=lambda d: (order[d.urgency], d.message.received_at))
     return decisions

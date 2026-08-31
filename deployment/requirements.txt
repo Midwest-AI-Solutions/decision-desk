@@ -1,0 +1,4 @@
+# Deployment image dependencies for Decision Desk on AgentCore Runtime.
+# (Local judge-run needs none of these: the default CLI is offline echo mode.)
+strands-agents>=0.1
+bedrock-agentcore

@@ -9,6 +9,10 @@ venv/
 # Generated demo output (regenerate with: decision-desk --fixtures fixtures/scenarios.json)
 inbox.html
 
+# Local working scratch (run reports, owner-gated drafts, verification
+# scripts). Durable copies live on the kanban card; never published.
+workspace/
+
 # OS / editor
 .DS_Store
 .idea/

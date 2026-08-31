@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from collections import Counter
 from pathlib import Path
@@ -11,6 +12,7 @@ from pathlib import Path
 from .inbox import write_inbox
 from .models import MessageRecord
 from .pipeline import run_cycle
+from .provider import load_provider
 
 DEFAULT_FIXTURES = Path(__file__).resolve().parents[2] / "fixtures" / "scenarios.json"
 
@@ -37,7 +39,12 @@ def main(argv: list[str] | None = None) -> int:
 
     raw = json.loads(args.fixtures.read_text(encoding="utf-8"))
     messages = [MessageRecord.from_dict(item) for item in raw]
-    decisions = run_cycle(messages)
+    # Powered mode only: the LLM phrases routine answers; echo mode (default)
+    # stays fully deterministic so judges get identical output every run.
+    summarizer = None
+    if os.environ.get("DECISION_DESK_PROVIDER", "echo").strip().lower() == "bedrock":
+        summarizer = load_provider()
+    decisions = run_cycle(messages, summarizer=summarizer)
     out = write_inbox(decisions, args.inbox_out, business_date=messages[0].received_at.date().isoformat() if messages else "")
 
     counts = Counter(d.urgency.value for d in decisions)

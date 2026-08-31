@@ -17,23 +17,22 @@ actions, and escalates only what needs a human decision.
           |                   |                   |
           v                   v                   v
   +--------------------------------------------------------+
-  |            Strands tool: parse_intake_message          |
-  |            (normalizes channel + contact + ask)        |
+  |              Strands tool: triage_message              |
+  |    classify + draft in one call; deterministic rules   |
   +---------------------------+----------------------------+
                               |
                               v
   +--------------------------------------------------------+
-  |              Strands tool: classify_urgency            |
-  |   deterministic rules first (safety keywords, money,   |
-  |   deadlines); LLM (Bedrock) resolves ambiguous cases   |
-  +---------------------------+----------------------------+
-                              |
-                              v
-  +--------------------------------------------------------+
-  |               Strands tool: draft_action               |
+  |            Strands tool: draft_next_action             |
   |   emergency -> booking slot + dispatch note            |
   |   quote-worthy -> quote range + call-back script       |
   |   routine -> auto-answer draft, queued silently        |
+  +---------------------------+----------------------------+
+                              |
+                              v
+  +--------------------------------------------------------+
+  |       Strands tool: run_intake_cycle (orchestration)   |
+  |   full unattended cycle, sorted by urgency then time   |
   +---------------------------+----------------------------+
                               |
                               v
@@ -43,23 +42,28 @@ actions, and escalates only what needs a human decision.
   |   tweak / decline; routine answers queued, no ping     |
   +--------------------------------------------------------+
 
-  Runtime: local Python process, or Amazon Bedrock AgentCore
-  (deployment path; strengthens Technical Implementation).
+  Runtime: local Python process (default), or Amazon Bedrock AgentCore
+  via the prepared package in deployment/ (owner-run; strengthens
+  Technical Implementation).
   Model: Amazon Bedrock (region us-east-1 default) via Strands.
   Data: synthetic fixtures only. No PII. MIT-licensed repo.
 ```
 
 ## Design decisions
 
-1. **Agent, not chat.** The Strands agent owns four real tools (parse, triage,
-   draft, render); there is no free-form chat loop. The agent runs a cycle and
-   stops - that is the product.
+1. **Agent, not chat.** The Strands agent owns three real tools
+   (`triage_message`, `draft_next_action`, `run_intake_cycle` — their JSON
+   contracts are pinned by `tests/test_agent_tools.py`); there is no
+   free-form chat loop. The agent runs a cycle and stops - that is the
+   product.
 
 2. **Deterministic-first triage.** Safety-critical classification (gas smell,
-   burst pipe, no heat in winter) never depends on a model call. The LLM only
-   resolves genuinely ambiguous messages. This keeps the escalation criterion
-   auditable and makes the project runnable by judges with zero cloud setup
-   (echo provider) while retaining the powered path (Bedrock).
+   burst pipe, no heat in winter) never depends on a model call, and unknown
+   asks default UP to human review rather than to a guess. The LLM never
+   classifies: in powered mode it only rephrases the customer-facing routine
+   answer. This keeps the escalation criterion auditable and makes the
+   project runnable by judges with zero cloud setup (echo provider) while
+   retaining the powered path (Bedrock).
 
 3. **Urgency economy.** Three levels only: `emergency` (interrupt now),
    `decision` (money or commitment on the table - surface in inbox),
@@ -76,7 +80,8 @@ actions, and escalates only what needs a human decision.
 ## Judging-criteria mapping
 
 - **Technological Implementation:** genuine multi-tool Strands agent; provider
-  abstraction (echo/Bedrock); AgentCore deployment path documented.
+  abstraction (echo/Bedrock); AgentCore deployment package prepared
+  (`deployment/`, owner-run).
 - **Design:** complete loop from raw intake to human decision, with a real
   inbox artifact - not a proof-of-concept script.
 - **Potential Impact:** after-hours missed calls are lost jobs for home-service

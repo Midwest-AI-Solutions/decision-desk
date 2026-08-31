@@ -53,14 +53,38 @@ open inbox.html   # macOS; otherwise open inbox.html in a browser
 ### Running with Amazon Bedrock (powered mode)
 
 By default the agent runs with a deterministic `echo` provider so judges can
-install and run the project with zero cloud setup. To run the same pipeline on
-Amazon Bedrock via the Strands Agents SDK:
+install and run the project with zero cloud setup. Setting
+`DECISION_DESK_PROVIDER=bedrock` routes customer-facing routine-answer
+phrasing through Amazon Bedrock via the Strands Agents SDK. Triage itself is
+always deterministic (see ARCHITECTURE.md) - the LLM never decides safety or
+escalation.
 
 ```bash
 export DECISION_DESK_PROVIDER=bedrock
 export AWS_PROFILE=your-profile      # standard AWS credentials; Builder ID works
 decision-desk --fixtures fixtures/scenarios.json
 ```
+
+## Deployment (Amazon Bedrock AgentCore)
+
+`deployment/` contains the prepared AgentCore Runtime deployment entrypoint
+and step-by-step runbook (`deployment/README.md`). The packaged path uses the
+official AgentCore SDK (`bedrock-agentcore`) so the same pipeline can run as
+a hosted agent; the local runtime (default) is the documented fallback and
+needs no cloud setup. Deployment has **not** been executed yet - it requires
+an owner-configured AWS credential path.
+
+## Submission deliverables map
+
+| Requirement (official rules) | Where |
+|---|---|
+| Strands Agents SDK agent | `src/decision_desk/agent.py` (3 tools, contract-pinned by tests) |
+| Setup + run instructions (README) | this file |
+| Architecture diagram | `ARCHITECTURE.md` + `architecture/architecture-diagram.svg` |
+| MIT license | [LICENSE](LICENSE) |
+| Demo video (<= 5 min) | script: `workspace/demo-video-script-v2.md` (recording pending) |
+| Live demo artifact | `inbox.html` (interactive decision inbox) |
+| AgentCore deployment | prepared in `deployment/` (optional, strengthens Technical Implementation) |
 
 ## Project layout
 
@@ -73,6 +97,7 @@ src/decision_desk/
   inbox.py      # decision-inbox rendering (interactive HTML surface; approvals
                 #   persist in localStorage, silent items hidden by default)
   __main__.py   # CLI entry point
+deployment/     # prepared Amazon Bedrock AgentCore Runtime entrypoint + runbook
 fixtures/       # synthetic demo scenarios (burst pipe, no-heat, invoice)
 tests/          # unit tests (pytest)
 ARCHITECTURE.md # architecture diagram + design notes

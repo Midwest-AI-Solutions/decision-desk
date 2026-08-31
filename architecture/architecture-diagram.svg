@@ -31,33 +31,34 @@
   <text x="830" y="117" text-anchor="middle" class="t">Email intake</text>
   <text x="830" y="135" text-anchor="middle" class="st">23:12 · synthetic</text>
 
-  <!-- arrows into parse -->
+  <!-- arrows into tools -->
   <line x1="130" y1="154" x2="440" y2="200" stroke="#374151" stroke-width="1.5" marker-end="url(#arrow)"/>
   <line x1="480" y1="154" x2="480" y2="200" stroke="#374151" stroke-width="1.5" marker-end="url(#arrow)"/>
   <line x1="830" y1="154" x2="520" y2="200" stroke="#374151" stroke-width="1.5" marker-end="url(#arrow)"/>
 
   <!-- Strands agent container -->
   <rect class="agent" x="120" y="205" width="720" height="270" rx="12"/>
-  <text x="480" y="228" text-anchor="middle" class="h">Strands Agent (Amazon Bedrock model · AgentCore runtime path)</text>
+  <text x="480" y="228" text-anchor="middle" class="h">Strands Agent — 3 tools · Bedrock model in powered mode</text>
 
   <rect class="box" x="150" y="250" width="200" height="70" rx="8"/>
-  <text x="250" y="278" text-anchor="middle" class="t">tool: parse_intake_message</text>
-  <text x="250" y="296" text-anchor="middle" class="st">normalize channel + ask</text>
+  <text x="250" y="278" text-anchor="middle" class="t">tool: triage_message</text>
+  <text x="250" y="296" text-anchor="middle" class="st">classify + draft in one call</text>
+  <text x="250" y="310" text-anchor="middle" class="st">deterministic rules (no model call)</text>
 
   <rect class="box" x="380" y="250" width="200" height="70" rx="8"/>
-  <text x="480" y="278" text-anchor="middle" class="t">tool: classify_urgency</text>
-  <text x="480" y="296" text-anchor="middle" class="st">deterministic rules first;</text>
-  <text x="480" y="310" text-anchor="middle" class="st">LLM only resolves ambiguity</text>
+  <text x="480" y="278" text-anchor="middle" class="t">tool: draft_next_action</text>
+  <text x="480" y="296" text-anchor="middle" class="st">action + concrete details</text>
+  <text x="480" y="310" text-anchor="middle" class="st">quote range / slot / script / answer</text>
 
   <rect class="box" x="610" y="250" width="200" height="70" rx="8"/>
-  <text x="710" y="278" text-anchor="middle" class="t">tool: draft_action</text>
-  <text x="710" y="296" text-anchor="middle" class="st">booking slot / quote range /</text>
-  <text x="710" y="310" text-anchor="middle" class="st">queued answer</text>
+  <text x="710" y="278" text-anchor="middle" class="t">tool: run_intake_cycle</text>
+  <text x="710" y="296" text-anchor="middle" class="st">full unattended cycle</text>
+  <text x="710" y="310" text-anchor="middle" class="st">sorted by urgency, then time</text>
 
   <rect class="box" x="265" y="360" width="430" height="80" rx="8"/>
-  <text x="480" y="388" text-anchor="middle" class="t">tool: run_intake_cycle — unattended cycle orchestration</text>
-  <text x="480" y="408" text-anchor="middle" class="st">urgency economy: EMERGENCY → interrupt · DECISION → inbox · ROUTINE → silent auto-answer</text>
-  <text x="480" y="426" text-anchor="middle" class="st">default provider: offline echo (judge-runnable, zero cloud setup) · powered: Bedrock</text>
+  <text x="480" y="385" text-anchor="middle" class="lbl">urgency economy: EMERGENCY → interrupt · DECISION → inbox · ROUTINE → silent</text>
+  <text x="480" y="405" text-anchor="middle" class="st">default provider: offline echo (judge-runnable, zero cloud setup)</text>
+  <text x="480" y="421" text-anchor="middle" class="st">powered mode: Amazon Bedrock (customer-facing answer phrasing)</text>
 
   <line x1="250" y1="320" x2="420" y2="360" stroke="#374151" stroke-width="1.5" marker-end="url(#arrow)"/>
   <line x1="480" y1="320" x2="480" y2="360" stroke="#374151" stroke-width="1.5" marker-end="url(#arrow)"/>
@@ -73,5 +74,5 @@
   <text x="480" y="584" text-anchor="middle" class="st">the owner makes one decision instead of ten</text>
 
   <!-- footnote -->
-  <text x="40" y="612" class="st">Runbook: local Python process (default) or Amazon Bedrock AgentCore deployment. MIT-licensed repo. No PII.</text>
+  <text x="40" y="612" class="st">Runtime: local Python (default, echo) or Amazon Bedrock AgentCore (deployment/ included). MIT-licensed repo. Synthetic data only — no PII.</text>
 </svg>
