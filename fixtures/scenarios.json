@@ -1,0 +1,47 @@
+[
+  {
+    "message_id": "vm-001",
+    "channel": "voicemail",
+    "customer_name": "Dana Whitfield",
+    "contact": "+1-555-0142",
+    "received_at": "2026-09-08T21:40:00",
+    "subject": "Voicemail transcript (21:40)",
+    "body": "Hi, this is Dana Whitfield on Maple Row. We've got a pipe that burst behind the washing machine and there's water everywhere - I can't find the shutoff. Please call me back tonight, this is an emergency."
+  },
+  {
+    "message_id": "sms-002",
+    "channel": "sms",
+    "customer_name": "Marcus Reed",
+    "contact": "+1-555-0177",
+    "received_at": "2026-09-08T22:05:00",
+    "subject": "SMS thread",
+    "body": "Hey, our furnace is giving no heat and it's supposed to freeze tonight. We've got a baby at home. What would a diagnostic and fix run, and could someone come tomorrow? Can you book us in?"
+  },
+  {
+    "message_id": "em-003",
+    "channel": "email",
+    "customer_name": "Priya Natarajan",
+    "contact": "priya.n@example.com",
+    "received_at": "2026-09-08T23:12:00",
+    "subject": "Invoice question",
+    "body": "Hello, quick question about invoice #4471 from last month - the receipt shows two line items for drain clearance. Could someone clarify before we process payment? Thanks, Priya."
+  },
+  {
+    "message_id": "vm-004",
+    "channel": "voicemail",
+    "customer_name": "Tom Alvarez",
+    "contact": "+1-555-0163",
+    "received_at": "2026-09-08T19:55:00",
+    "subject": "Voicemail transcript (19:55)",
+    "body": "Hi, my name is Tom, I'm over on Birch Street. I think my water heater is on its way out - it's rumbling and the water's rusty. What's the price to replace it? Probably looking at next week. Thanks."
+  },
+  {
+    "message_id": "em-005",
+    "channel": "email",
+    "customer_name": "Jules Fontaine",
+    "contact": "jules.f@example.com",
+    "received_at": "2026-09-09T07:05:00",
+    "subject": "Service area?",
+    "body": "Good morning - do you serve the Lakeview neighborhood? Looking for someone for a small job. What days are you in this area?"
+  }
+]

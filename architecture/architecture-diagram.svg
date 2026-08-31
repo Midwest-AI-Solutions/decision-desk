@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 620" font-family="-apple-system, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#374151"/>
+    </marker>
+  </defs>
+  <style>
+    .box{fill:#ffffff;stroke:#9ca3af;stroke-width:1.5;rx:8}
+    .chan{fill:#eef2ff;stroke:#6366f1;stroke-width:1.5}
+    .agent{fill:#fffbeb;stroke:#d97706;stroke-width:2}
+    .surf{fill:#ecfdf5;stroke:#059669;stroke-width:2}
+    .t{font-size:14px;fill:#111827}
+    .st{font-size:11px;fill:#6b7280}
+    .h{font-size:16px;font-weight:700;fill:#111827}
+    .lbl{font-size:11px;fill:#374151}
+  </style>
+
+  <text x="480" y="30" text-anchor="middle" class="h">Decision Desk — after-hours intake to human decision</text>
+  <text x="480" y="48" text-anchor="middle" class="st">Strands Agents SDK · Amazon Bedrock · synthetic data only</text>
+
+  <!-- Channels -->
+  <rect class="chan" x="40" y="90" width="180" height="64" rx="8"/>
+  <text x="130" y="117" text-anchor="middle" class="t">Voicemail transcript</text>
+  <text x="130" y="135" text-anchor="middle" class="st">21:40 · synthetic feed</text>
+
+  <rect class="chan" x="390" y="90" width="180" height="64" rx="8"/>
+  <text x="480" y="117" text-anchor="middle" class="t">SMS thread</text>
+  <text x="480" y="135" text-anchor="middle" class="st">22:05 · synthetic</text>
+
+  <rect class="chan" x="740" y="90" width="180" height="64" rx="8"/>
+  <text x="830" y="117" text-anchor="middle" class="t">Email intake</text>
+  <text x="830" y="135" text-anchor="middle" class="st">23:12 · synthetic</text>
+
+  <!-- arrows into parse -->
+  <line x1="130" y1="154" x2="440" y2="200" stroke="#374151" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="480" y1="154" x2="480" y2="200" stroke="#374151" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="830" y1="154" x2="520" y2="200" stroke="#374151" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Strands agent container -->
+  <rect class="agent" x="120" y="205" width="720" height="270" rx="12"/>
+  <text x="480" y="228" text-anchor="middle" class="h">Strands Agent (Amazon Bedrock model · AgentCore runtime path)</text>
+
+  <rect class="box" x="150" y="250" width="200" height="70" rx="8"/>
+  <text x="250" y="278" text-anchor="middle" class="t">tool: parse_intake_message</text>
+  <text x="250" y="296" text-anchor="middle" class="st">normalize channel + ask</text>
+
+  <rect class="box" x="380" y="250" width="200" height="70" rx="8"/>
+  <text x="480" y="278" text-anchor="middle" class="t">tool: classify_urgency</text>
+  <text x="480" y="296" text-anchor="middle" class="st">deterministic rules first;</text>
+  <text x="480" y="310" text-anchor="middle" class="st">LLM only resolves ambiguity</text>
+
+  <rect class="box" x="610" y="250" width="200" height="70" rx="8"/>
+  <text x="710" y="278" text-anchor="middle" class="t">tool: draft_action</text>
+  <text x="710" y="296" text-anchor="middle" class="st">booking slot / quote range /</text>
+  <text x="710" y="310" text-anchor="middle" class="st">queued answer</text>
+
+  <rect class="box" x="265" y="360" width="430" height="80" rx="8"/>
+  <text x="480" y="388" text-anchor="middle" class="t">tool: run_intake_cycle — unattended cycle orchestration</text>
+  <text x="480" y="408" text-anchor="middle" class="st">urgency economy: EMERGENCY → interrupt · DECISION → inbox · ROUTINE → silent auto-answer</text>
+  <text x="480" y="426" text-anchor="middle" class="st">default provider: offline echo (judge-runnable, zero cloud setup) · powered: Bedrock</text>
+
+  <line x1="250" y1="320" x2="420" y2="360" stroke="#374151" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="480" y1="320" x2="480" y2="360" stroke="#374151" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="710" y1="320" x2="540" y2="360" stroke="#374151" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- arrow to inbox -->
+  <line x1="480" y1="475" x2="480" y2="515" stroke="#374151" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Decision inbox -->
+  <rect class="surf" x="150" y="520" width="660" height="72" rx="10"/>
+  <text x="480" y="547" text-anchor="middle" class="h">Decision Inbox (inbox.html — human decision surface)</text>
+  <text x="480" y="567" text-anchor="middle" class="t">urgent items on top with a proposed action · approve / tweak / decline</text>
+  <text x="480" y="584" text-anchor="middle" class="st">the owner makes one decision instead of ten</text>
+
+  <!-- footnote -->
+  <text x="40" y="612" class="st">Runbook: local Python process (default) or Amazon Bedrock AgentCore deployment. MIT-licensed repo. No PII.</text>
+</svg>
