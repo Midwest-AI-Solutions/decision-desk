@@ -229,9 +229,6 @@ def draft_action(message: MessageRecord, urgency: Urgency, category: str) -> tup
     return action, details
 
 
-BUSINESS_NAME = "the shop"
-
-
 def triage(message: MessageRecord) -> Decision:
     """Run one message through the full pipeline."""
     urgency, category, reasoning = classify_urgency(message)

@@ -70,7 +70,8 @@ src/decision_desk/
   provider.py   # LLM provider abstraction (echo | bedrock)
   pipeline.py   # triage rules, action drafting, escalation criteria
   agent.py      # Strands Agents SDK integration (tools + agent factory)
-  inbox.py      # decision-inbox rendering (HTML surface)
+  inbox.py      # decision-inbox rendering (interactive HTML surface; approvals
+                #   persist in localStorage, silent items hidden by default)
   __main__.py   # CLI entry point
 fixtures/       # synthetic demo scenarios (burst pipe, no-heat, invoice)
 tests/          # unit tests (pytest)

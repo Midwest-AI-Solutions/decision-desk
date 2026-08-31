@@ -112,9 +112,33 @@ class TestInbox:
     def test_render_contains_rows_and_escapes_html(self):
         evil = msg(customer_name="<script>x</script>", body="quote for drain clearance?")
         html = render_inbox([triage(evil)], business_date="2026-09-09")
-        assert "<script>" not in html
-        assert "&lt;script&gt;" in html
+        assert "<script>x</script>" not in html  # user payload never raw
+        assert "&lt;script&gt;" in html  # and is escaped instead
         assert "DECISION" in html
+
+    def test_render_shows_quote_details_and_buttons_for_decision(self):
+        d = triage(msg(body="need a quote for water heater replacement"))
+        html = render_inbox([d], business_date="2026-09-09")
+        assert "Quote range" in html
+        assert "Proposed slot" in html
+        assert "Reply script" in html
+        assert "data-act='approved'" in html
+        assert "data-act='declined'" in html
+        assert "window.ddDate=" in html  # state bootstrap present
+
+    def test_routine_card_silent_and_buttonless(self):
+        d = triage(msg(body="what are your hours?"))
+        html = render_inbox([d], business_date="2026-09-09")
+        assert "silent" in html
+        assert "data-act=" not in html
+        assert "Auto-queue" in html
+
+    def test_emergency_card_shows_prep_and_dispatch(self):
+        d = triage(msg(body="pipe burst, water everywhere, flooding"))
+        html = render_inbox([d], business_date="2026-09-09")
+        assert "Prep:" in html
+        assert "Dispatch:" in html
+        assert "ACT NOW" in html
 
     def test_render_orders_emergency_first(self):
         decisions = run_cycle(
