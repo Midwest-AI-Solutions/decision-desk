@@ -37,7 +37,10 @@ makes one decision instead of ten.
 
 ## Quick start
 
-Requires Python 3.10+.
+Requires Python 3.10+ and a current `pip` (23+). If you are on an older
+system Python whose bundled pip predates PEP 660 (e.g. macOS `python3` is
+3.9 with pip 21), either upgrade pip first (`pip install --upgrade pip`) or
+build the venv from a newer interpreter (e.g. `python3.13 -m venv .venv`).
 
 ```bash
 python -m venv .venv && source .venv/bin/activate
